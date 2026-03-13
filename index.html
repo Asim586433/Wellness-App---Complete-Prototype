@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Wellness App - Complete Prototype</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        /* Phone Container */
+        .phone-container {
+            width: 380px;
+            height: 700px;
+            background: #fff;
+            border-radius: 40px;
+            box-shadow: 0 30px 50px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: #fff;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* App Container */
+        .app-container {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            scroll-behavior: smooth;
+            padding-bottom: 70px;
+        }
+
+        /* Screen Styles */
+        .screen {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            background: #fff;
+            border-top: 1px solid #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-around;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #999;
+            font-size: 12px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-item i {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        /* Components */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Cards */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border: 1px solid #f0f0f0;
+        }
+
+        .premium-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-link {
+            background: transparent;
+            color: #667eea;
+            box-shadow: none;
+            padding: 8px;
+        }
+
+        /* Inputs */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        /* Grid Layout */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Action Cards */
+        .action-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 20px;
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .action-card:hover {
+            transform: scale(1.02);
+        }
+
+        .action-card i {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .action-card.locked {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+        }
+
+        /* Progress Bar */
+        .progress-item {
+            margin-bottom: 15px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+
+        /* Premium Badge */
+        .premium-badge {
+            background: #ffd700;
+            color: #333;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Chat Bubbles */
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            padding: 16px;
+            background: #f9f9f9;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+
+        .chat-message {
+            margin-bottom: 16px;
+            display: flex;
+        }
+
+        .chat-message.user {
+            justify-content: flex-end;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .ai .chat-bubble {
+            background: #f0f0f0;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .user .chat-bubble {
+            background: #667eea;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 14px;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { bottom: 50px; opacity: 0; }
+            to { bottom: 100px; opacity: 1; }
+        }
+
+        /* Icons (using emoji as fallback) */
+        .icon {
+            font-size: 24px;
+        }
+
+        /* Subscription Plans */
+        .plan-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .plan-card.selected {
+            border-color: #667eea;
+            background: #f8f4ff;
+        }
+
+        .plan-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .plan-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+
+        .plan-features {
+            list-style: none;
+        }
+
+        .plan-features li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Hidden class for auth screens */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Auth Container */
+        .auth-container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 📱 🔋</span>
+        </div>
+
+        <!-- App Container -->
+        <div class="app-container" id="appContainer">
+            <!-- Auth Screens -->
+            <div id="loginScreen" class="screen active">
+                <div class="auth-container">
+                    <div class="header">
+                        <h1 class="title">Welcome Back</h1>
+                    </div>
+                    <p class="subtitle">Sign in to continue your wellness journey</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Email</label>
+                        <input type="email" class="input-field" id="loginEmail" placeholder="Enter your email" value="demo@wellness.com">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Password</label>
+                        <input type="password" class="input-field" id="loginPassword" placeholder="Enter your password" value="demo123">
+                    </div>
+
+                    <button class="btn" onclick="handleLogin()">Sign In</button>
+                    <button class="btn btn-link" onclick="showScreen('signupScreen')">Create Account</button>
+                    <button class="btn btn-link" onclick="showScreen('forgotScreen')">Forgot Password?</button>
+                </div>
+            </div>
+
+            <div id="signupScreen" class="screen">
+                <div class="auth-container">
+                    <div class="header">
+                        <h1 class="title">Create Account</h1>
+                    </div>
+                    <p class="subtitle">Start your wellness journey today</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Full Name</label>
+                        <input type="text" class="input-field" id="signupName" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Email</label>
+                        <input type="email" class="input-field" id="signupEmail" placeholder="Enter your email">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Password</label>
+                        <input type="password" class="input-field" id="signupPassword" placeholder="Create a password">
+                    </div>
+
+                    <button class="btn" onclick="handleSignup()">Sign Up</button>
+                    <button class="btn btn-link" onclick="showScreen('loginScreen')">Already have an account?</button>
+                </div>
+            </div>
+
+            <div id="forgotScreen" class="screen">
+                <div class="auth-container">
+                    <div class="header">
+                        <h1 class="title">Reset Password</h1>
+                    </div>
+                    <p class="subtitle">We'll send you a reset link</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Email</label>
+                        <input type="email" class="input-field" id="resetEmail" placeholder="Enter your email">
+                    </div>
+
+                    <button class="btn" onclick="handleResetPassword()">Send Reset Link</button>
+                    <button class="btn btn-link" onclick="showScreen('loginScreen')">Back to Login</button>
+                </div>
+            </div>
+
+            <!-- Main Screens (Protected) -->
+            <div id="homeScreen" class="screen">
+                <div class="header">
+                    <div>
+                        <h1 class="title">Hello, Alex</h1>
+                        <p class="subtitle" id="currentDate"></p>
+                    </div>
+                    <div class="avatar" onclick="showScreen('profileScreen')">A</div>
+                </div>
+
+                <!-- Premium Banner -->
+                <div class="card premium-card" id="premiumBanner" onclick="showScreen('paywallScreen')">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="icon">👑</span>
+                            <div>
+                                <strong>Upgrade to Premium</strong>
+                                <p style="font-size: 14px; opacity: 0.9;">Unlock AI features</p>
+                            </div>
+                        </div>
+                        <span class="icon">→</span>
+                    </div>
+                </div>
+
+                <!-- Daily Tip Card -->
+                <div class="card" id="dailyTipCard">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+                        <span class="icon">💡</span>
+                        <strong>Daily Wellness Tip</strong>
+                    </div>
+                    <p id="dailyTip">Take 5 deep breaths to center yourself and reduce stress.</p>
+                </div>
+
+                <!-- Quick Actions -->
+                <h3 style="margin-bottom: 12px;">Quick Actions</h3>
+                <div class="grid-2">
+                    <div class="action-card" onclick="showScreen('chatScreen')">
+                        <span class="icon">🤖</span>
+                        <span>AI Chat</span>
+                        <span class="premium-badge" style="margin-top: 8px;">PREMIUM</span>
+                    </div>
+                    <div class="action-card" style="background: #50C878;" onclick="showScreen('planScreen')">
+                        <span class="icon">📋</span>
+                        <span>Daily Plan</span>
+                    </div>
+                    <div class="action-card" style="background: #FF6B6B;" onclick="showScreen('progressScreen')">
+                        <span class="icon">📊</span>
+                        <span>Progress</span>
+                    </div>
+                    <div class="action-card" style="background: #9B59B6;" onclick="showMeditation()">
+                        <span class="icon">🧘</span>
+                        <span>Meditate</span>
+                    </div>
+                </div>
+
+                <!-- Weekly Progress -->
+                <h3 style="margin-bottom: 12px; margin-top: 20px;">Weekly Progress</h3>
+                <div class="card">
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Meditation</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Exercise</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Mindfulness</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chatScreen" class="screen">
+                <div class="header">
+                    <button class="btn btn-link" style="width: auto; padding: 8px;" onclick="showScreen('homeScreen')">← Back</button>
+                    <h2 class="title">AI Wellness Coach</h2>
+                    <div></div>
+                </div>
+
+                <div class="chat-container" id="chatContainer">
+                    <div class="chat-message ai">
+                        <div class="chat-bubble">
+                            Hello! I'm your wellness coach. How can I help you today?
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" class="input-field" id="chatInput" placeholder="Ask me anything..." style="flex: 1;">
+                    <button class="btn" style="width: auto; padding: 16px 24px;" onclick="sendMessage()">Send</button>
+                </div>
+                <p style="font-size: 12px; color: #999; margin-top: 8px; text-align: center;">Premium feature • 100 messages/month</p>
+            </div>
+
+            <div id="planScreen" class="screen">
+                <div class="header">
+                    <button class="btn btn-link" style="width: auto; padding: 8px;" onclick="showScreen('homeScreen')">← Back</button>
+                    <h2 class="title">Daily Plan</h2>
+                    <div></div>
+                </div>
+
+                <div class="card" id="planCard">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                        <span class="icon">🧘</span>
+                        <div>
+                            <strong>Morning Meditation</strong>
+                            <p>5 minutes • Mindfulness</p>
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 20px;">Close your eyes and focus on your breath. Let go of any tension.</p>
+
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                        <span class="icon">🏃</span>
+                        <div>
+                            <strong>Exercise</strong>
+                            <p>15 minutes • Cardio</p>
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 20px;">Take a brisk walk or do some jumping jacks to get your heart rate up.</p>
+
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                        <span class="icon">🥗</span>
+                        <div>
+                            <strong>Nutrition</strong>
+                            <p>Healthy eating</p>
+                        </div>
+                    </div>
+                    <p>Try a balanced bowl with quinoa, roasted vegetables, and grilled chicken.</p>
+                </div>
+
+                <button class="btn" onclick="regeneratePlan()">Generate New Plan</button>
+            </div>
+
+            <div id="progressScreen" class="screen">
+                <div class="header">
+                    <button class="btn btn-link" style="width: auto; padding: 8px;" onclick="showScreen('homeScreen')">← Back</button>
+                    <h2 class="title">Progress</h2>
+                    <div></div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 20px;">This Week</h3>
+                    
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Meditation</span>
+                            <span>75 min</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Exercise</span>
+                            <span>120 min</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 60%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Mindfulness</span>
+                            <span>45 min</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="progress-item">
+                        <div class="progress-header">
+                            <span>Sleep</span>
+                            <span>42 hours</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 70%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="margin-bottom: 12px;">Achievements</h3>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        <div style="text-align: center;">
+                            <span class="icon" style="font-size: 32px;">🔥</span>
+                            <p style="font-size: 12px;">7 Day Streak</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <span class="icon" style="font-size: 32px;">🧘</span>
+                            <p style="font-size: 12px;">Meditation Master</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <span class="icon" style="font-size: 32px;">💪</span>
+                            <p style="font-size: 12px;">Early Bird</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="profileScreen" class="screen">
+                <div class="header">
+                    <button class="btn btn-link" style="width: auto; padding: 8px;" onclick="showScreen('homeScreen')">← Back</button>
+                    <h2 class="title">Profile</h2>
+                    <div></div>
+                </div>
+
+                <div style="align-items: center; margin-bottom: 30px;">
+                    <div class="avatar" style="width: 80px; height: 80px; border-radius: 40px; font-size: 32px; margin: 0 auto 16px;">A</div>
+                    <h3 style="text-align: center;">Alex Johnson</h3>
+                    <p style="text-align: center; color: #666;">alex@example.com</p>
+                </div>
+
+                <div class="card" onclick="showScreen('paywallScreen')" style="cursor: pointer;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="icon">👑</span>
+                            <div>
+                                <strong>Premium Plan</strong>
+                                <p style="color: #666;">Free trial • 14 days left</p>
+                            </div>
+                        </div>
+                        <span class="icon">→</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;" onclick="showNotification('Settings coming soon!')">
+                        <span class="icon">⚙️</span>
+                        <span>Settings</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;" onclick="showNotification('Notifications coming soon!')">
+                        <span class="icon">🔔</span>
+                        <span>Notifications</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;" onclick="showNotification('Privacy policy')">
+                        <span class="icon">🔒</span>
+                        <span>Privacy</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px;" onclick="handleLogout()">
+                        <span class="icon">🚪</span>
+                        <span style="color: #ff6b6b;">Logout</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="paywallScreen" class="screen">
+                <div class="header">
+                    <button class="btn btn-link" style="width: auto; padding: 8px;" onclick="showScreen('profileScreen')">← Back</button>
+                    <h2 class="title">Premium</h2>
+                    <div></div>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <span class="icon" style="font-size: 64px;">👑</span>
+                    <h2 style="margin-bottom: 8px;">Upgrade to Premium</h2>
+                    <p style="color: #666;">Unlock your full wellness potential</p>
+                </div>
+
+                <div class="plan-card selected" id="monthlyPlan" onclick="selectPlan('monthly')">
+                    <div class="plan-name">Monthly Premium</div>
+                    <div class="plan-price">$9.99/month</div>
+                    <ul class="plan-features">
+                        <li>✓ Unlimited AI Chat</li>
+                        <li>✓ Personalized Daily Plans</li>
+                        <li>✓ Advanced Progress Tracking</li>
+                        <li>✓ Premium Content Library</li>
+                        <li>✓ Priority Support</li>
+                    </ul>
+                </div>
+
+                <div class="plan-card" id="yearlyPlan" onclick="selectPlan('yearly')">
+                    <div class="plan-name">Yearly Premium</div>
+                    <div class="plan-price">$99.99/year</div>
+                    <div style="background: #4CAF50; color: white; padding: 4px 8px; border-radius: 20px; font-size: 12px; display: inline-block; margin-bottom: 12px;">Save 17%</div>
+                    <ul class="plan-features">
+                        <li>✓ Everything in Monthly</li>
+                        <li>✓ 2 Months Free</li>
+                        <li>✓ Exclusive Content</li>
+                        <li>✓ Wellness Webinars</li>
+                        <li>✓ 1-on-1 Coaching</li>
+                    </ul>
+                </div>
+
+                <button class="btn" onclick="handleSubscribe()">Subscribe Now</button>
+                <p style="font-size: 12px; color: #999; text-align: center; margin-top: 16px;">Cancel anytime • Secure payment</p>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation (Hidden on auth screens) -->
+        <div class="bottom-nav" id="bottomNav">
+            <div class="nav-item active" onclick="navigateTo('home')">
+                <span class="icon">🏠</span>
+                <span>Home</span>
+            </div>
+            <div class="nav-item" onclick="navigateTo('chat')">
+                <span class="icon">🤖</span>
+                <span>AI Chat</span>
+            </div>
+            <div class="nav-item" onclick="navigateTo('plan')">
+                <span class="icon">📋</span>
+                <span>Plan</span>
+            </div>
+            <div class="nav-item" onclick="navigateTo('progress')">
+                <span class="icon">📊</span>
+                <span>Progress</span>
+            </div>
+            <div class="nav-item" onclick="navigateTo('profile')">
+                <span class="icon">👤</span>
+                <span>Profile</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // App State
+        let currentUser = null;
+        let isPremium = false;
+        let selectedPlan = 'monthly';
+        let chatMessages = [];
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDate();
+            checkAuthStatus();
+            loadDailyTip();
+            
+            // Set default date
+            const date = new Date();
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        });
+
+        // Date update
+        function updateDate() {
+            const date = new Date();
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = date.toLocaleDateString('en-US', options);
+        }
+
+        // Auth Check
+        function checkAuthStatus() {
+            const savedUser = localStorage.getItem('wellnessUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                isPremium = localStorage.getItem('wellnessPremium') === 'true';
+                showMainApp();
+                updatePremiumUI();
+            } else {
+                showScreen('loginScreen');
+                document.getElementById('bottomNav').classList.add('hidden');
+            }
+        }
+
+        // Login Handler
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showNotification('Please fill in all fields');
+                return;
+            }
+
+            // Simulate login
+            currentUser = {
+                name: 'Alex Johnson',
+                email: email,
+                avatar: 'A'
+            };
+
+            localStorage.setItem('wellnessUser', JSON.stringify(currentUser));
+            showNotification('Login successful!');
+            showMainApp();
+        }
+
+        // Signup Handler
+        function handleSignup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            if (!name || !email || !password) {
+                showNotification('Please fill in all fields');
+                return;
+            }
+
+            // Simulate signup
+            currentUser = {
+                name: name,
+                email: email,
+                avatar: name.charAt(0)
+            };
+
+            localStorage.setItem('wellnessUser', JSON.stringify(currentUser));
+            showNotification('Account created successfully!');
+            showMainApp();
+        }
+
+        // Reset Password
+        function handleResetPassword() {
+            const email = document.getElementById('resetEmail').value;
+            if (!email) {
+                showNotification('Please enter your email');
+                return;
+            }
+            showNotification('Password reset link sent to your email!');
+            setTimeout(() => showScreen('loginScreen'), 2000);
+        }
+
+        // Show Main App
+        function showMainApp() {
+            document.getElementById('bottomNav').classList.remove('hidden');
+            showScreen('homeScreen');
+            updatePremiumUI();
+        }
+
+        // Logout
+        function handleLogout() {
+            currentUser = null;
+            isPremium = false;
+            localStorage.removeItem('wellnessUser');
+            localStorage.removeItem('wellnessPremium');
+            document.getElementById('bottomNav').classList.add('hidden');
+            showScreen('loginScreen');
+            showNotification('Logged out successfully');
+        }
+
+        // Navigation
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+
+            // Update bottom nav
+            if (screenId.includes('home')) navigateTo('home');
+            else if (screenId.includes('chat')) navigateTo('chat');
+            else if (screenId.includes('plan')) navigateTo('plan');
+            else if (screenId.includes('progress')) navigateTo('progress');
+            else if (screenId.includes('profile')) navigateTo('profile');
+
+            // Load screen-specific data
+            if (screenId === 'chatScreen') loadChat();
+            else if (screenId === 'planScreen') loadDailyPlan();
+        }
+
+        function navigateTo(screen) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const navItems = document.querySelectorAll('.nav-item');
+            const index = ['home', 'chat', 'plan', 'progress', 'profile'].indexOf(screen);
+            if (index !== -1) {
+                navItems[index].classList.add('active');
+            }
+        }
+
+        // Premium Features
+        function updatePremiumUI() {
+            const banner = document.getElementById('premiumBanner');
+            if (isPremium) {
+                banner.innerHTML = `
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="icon">👑</span>
+                            <div>
+                                <strong>Premium Active</strong>
+                                <p style="font-size: 14px; opacity: 0.9;">Thank you for supporting us!</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // AI Chat
+        function loadChat() {
+            const container = document.getElementById('chatContainer');
+            container.innerHTML = `
+                <div class="chat-message ai">
+                    <div class="chat-bubble">
+                        Hello! I'm your wellness coach. How can I help you today?
+                    </div>
+                </div>
+            `;
+        }
+
+        function sendMessage() {
+            if (!isPremium) {
+                showNotification('Please upgrade to premium to use AI chat');
+                showScreen('paywallScreen');
+                return;
+            }
+
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            const container = document.getElementById('chatContainer');
+            
+            // Add user message
+            container.innerHTML += `
+                <div class="chat-message user">
+                    <div class="chat-bubble">${message}</div>
+                </div>
+            `;
+
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    "That's great! Remember to take deep breaths and stay mindful.",
+                    "I understand. Let's work on that together. Start with small steps.",
+                    "Excellent question! Here's a tip: consistency is key to wellness.",
+                    "You're making great progress! Keep up the good work."
+                ];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                
+                container.innerHTML += `
+                    <div class="chat-message ai">
+                        <div class="chat-bubble">${response}</div>
+                    </div>
+                `;
+                
+                container.scrollTop = container.scrollHeight;
+            }, 1000);
+
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Daily Plan
+        function loadDailyPlan() {
+            if (!isPremium) {
+                showNotification('Upgrade to premium for personalized daily plans');
+            }
+        }
+
+        function regeneratePlan() {
+            if (!isPremium) {
+                showNotification('Premium feature - please upgrade');
+                showScreen('paywallScreen');
+                return;
+            }
+
+            const plans = [
+                {
+                    meditation: "5-minute body scan meditation",
+                    exercise: "20-minute yoga flow",
+                    nutrition: "Green smoothie bowl",
+                    mindfulness: "Gratitude journaling"
+                },
+                {
+                    meditation: "Loving-kindness meditation",
+                    exercise: "30-minute cardio workout",
+                    nutrition: "Quinoa salad with vegetables",
+                    mindfulness: "Digital detox hour"
+                },
+                {
+                    meditation: "Breathing awareness",
+                    exercise: "15-minute HIIT workout",
+                    nutrition: "Grilled salmon with asparagus",
+                    mindfulness: "Nature walk"
+                }
+            ];
+
+            const plan = plans[Math.floor(Math.random() * plans.length)];
+            
+            document.getElementById('planCard').innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <span class="icon">🧘</span>
+                    <div>
+                        <strong>Morning Meditation</strong>
+                        <p>${plan.meditation}</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <span class="icon">🏃</span>
+                    <div>
+                        <strong>Exercise</strong>
+                        <p>${plan.exercise}</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <span class="icon">🥗</span>
+                    <div>
+                        <strong>Nutrition</strong>
+                        <p>${plan.nutrition}</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <span class="icon">🧠</span>
+                    <div>
+                        <strong>Mindfulness</strong>
+                        <p>${plan.mindfulness}</p>
+                    </div>
+                </div>
+            `;
+
+            showNotification('New daily plan generated!');
+        }
+
+        // Daily Tip
+        function loadDailyTip() {
+            const tips = [
+                "Take 5 deep breaths to center yourself and reduce stress.",
+                "Drink a glass of water first thing in the morning.",
+                "Stand up and stretch every hour during work.",
+                "Practice gratitude by listing 3 things you're thankful for.",
+                "Take a 10-minute walk in nature today.",
+                "Disconnect from screens 30 minutes before bed.",
+                "Try a new healthy recipe this week.",
+                "Call a friend or family member to connect.",
+                "Do one thing that brings you joy today.",
+                "Set an intention for the day ahead."
+            ];
+            
+            const tip = tips[Math.floor(Math.random() * tips.length)];
+            document.getElementById('dailyTip').textContent = tip;
+        }
+
+        // Meditation
+        function showMeditation() {
+            showNotification('Starting 5-minute meditation...');
+            setTimeout(() => {
+                showNotification('Meditation complete! Great job!');
+            }, 3000);
+        }
+
+        // Subscription
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            document.getElementById('monthlyPlan').classList.remove('selected');
+            document.getElementById('yearlyPlan').classList.remove('selected');
+            document.getElementById(plan + 'Plan').classList.add('selected');
+        }
+
+        function handleSubscribe() {
+            showNotification('Processing payment...');
+            
+            setTimeout(() => {
+                isPremium = true;
+                localStorage.setItem('wellnessPremium', 'true');
+                showNotification('Welcome to Premium! 🎉');
+                updatePremiumUI();
+                showScreen('homeScreen');
+            }, 2000);
+        }
+
+        // Utility Functions
+        function showNotification(message) {
+            // Remove existing toast
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Keyboard handling
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && document.getElementById('chatScreen').classList.contains('active')) {
+                sendMessage();
+            }
+        });
+
+        // Simulate network requests
+        function simulateNetworkRequest() {
+            return new Promise(resolve => setTimeout(resolve, 1000));
+        }
+    </script>
+</body>
+</html>
