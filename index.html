@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Wellness App - Complete Functional System</title>
+    <title>Wellness App - Complete Fully Functional System</title>
     <style>
         * {
             margin: 0;
@@ -194,12 +194,14 @@
             cursor: pointer;
             border: none;
             font-size: 14px;
+            text-decoration: underline;
         }
 
         .btn-small {
             padding: 10px;
             font-size: 14px;
             width: auto;
+            min-width: 60px;
         }
 
         .btn-danger {
@@ -235,6 +237,12 @@
         .input-field:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        select.input-field {
+            appearance: none;
+            background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 16px center;
+            background-size: 16px;
         }
 
         /* Grid Layout */
@@ -359,6 +367,7 @@
             padding: 12px 16px;
             border-radius: 20px;
             font-size: 14px;
+            word-wrap: break-word;
         }
 
         .ai .chat-bubble {
@@ -504,6 +513,11 @@
             color: #666;
             font-weight: 600;
             white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .tab:hover {
+            color: #667eea;
         }
 
         .tab.active {
@@ -549,6 +563,11 @@
             align-items: center;
             gap: 4px;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .streak-badge:hover {
+            transform: scale(1.05);
         }
 
         /* Meditation Timer */
@@ -585,6 +604,11 @@
             margin-bottom: 12px;
             border-left: 4px solid #ffd700;
             cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .journal-entry:hover {
+            transform: translateX(5px);
         }
 
         .journal-date {
@@ -654,6 +678,15 @@
             border-bottom: 1px solid #f0f0f0;
         }
 
+        .table tr {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .table tr:hover {
+            background: #f8f4ff;
+        }
+
         /* Badge */
         .badge {
             padding: 4px 8px;
@@ -690,6 +723,11 @@
             border: 2px solid #e0e0e0;
             border-radius: 12px;
             font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
         /* Toggle Switch */
@@ -793,6 +831,7 @@
         .rating {
             color: #ffd700;
             font-size: 16px;
+            cursor: pointer;
         }
 
         /* File Upload */
@@ -803,10 +842,66 @@
             text-align: center;
             cursor: pointer;
             margin-bottom: 20px;
+            transition: background 0.3s;
         }
 
         .file-upload:hover {
             background: #f8f4ff;
+        }
+
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 120px;
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 5px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Admin tab content */
+        .admin-tab-content {
+            display: none;
+        }
+
+        .admin-tab-content.active {
+            display: block;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
         }
     </style>
 </head>
@@ -824,22 +919,22 @@
             <div id="onboardingScreen" class="screen active">
                 <div class="auth-container">
                     <div style="text-align: center; margin-bottom: 40px;">
-                        <div class="image-placeholder" style="width: 120px; height: 120px; border-radius: 60px; margin: 0 auto 20px; font-size: 48px;">🧘</div>
+                        <div class="image-placeholder" style="width: 120px; height: 120px; border-radius: 60px; margin: 0 auto 20px; font-size: 48px; cursor: pointer;" onclick="showNotification('Welcome to Wellness App!')">🧘</div>
                         <h1 class="title" style="margin-bottom: 10px;">Wellness App</h1>
                         <p class="subtitle">Your journey to better health starts here</p>
                     </div>
                     
                     <div style="margin-bottom: 30px;">
                         <div style="display: flex; gap: 20px; justify-content: center; margin-bottom: 30px;">
-                            <div style="text-align: center;">
+                            <div style="text-align: center; cursor: pointer;" onclick="showNotification('Mindfulness features coming soon!')">
                                 <div class="image-placeholder" style="width: 50px; height: 50px; border-radius: 25px; margin: 0 auto 10px;">🧠</div>
                                 <p>Mindfulness</p>
                             </div>
-                            <div style="text-align: center;">
+                            <div style="text-align: center; cursor: pointer;" onclick="showNotification('Fitness features coming soon!')">
                                 <div class="image-placeholder" style="width: 50px; height: 50px; border-radius: 25px; margin: 0 auto 10px;">💪</div>
                                 <p>Fitness</p>
                             </div>
-                            <div style="text-align: center;">
+                            <div style="text-align: center; cursor: pointer;" onclick="showNotification('Nutrition features coming soon!')">
                                 <div class="image-placeholder" style="width: 50px; height: 50px; border-radius: 25px; margin: 0 auto 10px;">🥗</div>
                                 <p>Nutrition</p>
                             </div>
@@ -865,7 +960,7 @@
                     </div>
                     
                     <div style="text-align: center; margin-bottom: 30px;">
-                        <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto;">👨‍💼</div>
+                        <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto; cursor: pointer;" onclick="showNotification('Admin access only')">👨‍💼</div>
                         <p class="subtitle" style="margin-top: 10px;">Administrator Access Only</p>
                     </div>
                     
@@ -893,7 +988,7 @@
                     </div>
                     
                     <div style="text-align: center; margin-bottom: 30px;">
-                        <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto;">👤</div>
+                        <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto; cursor: pointer;" onclick="showNotification('Sign in to continue')">👤</div>
                     </div>
                     
                     <div class="input-group">
@@ -919,7 +1014,7 @@
 
                     <div style="margin-top: 30px; text-align: center;">
                         <p style="color: #999; margin-bottom: 10px;">Demo Credentials:</p>
-                        <p style="font-size: 12px; color: #666;">user@wellness.com / user123</p>
+                        <p style="font-size: 12px; color: #666; cursor: pointer;" onclick="document.getElementById('loginEmail').value='user@wellness.com'; document.getElementById('loginPassword').value='user123'">user@wellness.com / user123</p>
                     </div>
                 </div>
             </div>
@@ -957,6 +1052,21 @@
                     <div class="input-group">
                         <label class="input-label">Confirm Password</label>
                         <input type="password" class="input-field" id="signupConfirmPassword" placeholder="Confirm your password" value="password123">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Date of Birth</label>
+                        <input type="date" class="input-field" id="signupDob" value="1990-01-01" onchange="showNotification('DOB selected: ' + this.value)">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Gender</label>
+                        <select class="input-field" id="signupGender" onchange="showNotification('Gender selected: ' + this.value)">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            <option value="prefer-not">Prefer not to say</option>
+                        </select>
                     </div>
 
                     <button class="btn" onclick="handleSignup()">Sign Up</button>
@@ -1083,7 +1193,7 @@
                             <span>Meditation (210 min)</span>
                             <span id="meditationProgress">75%</span>
                         </div>
-                        <div class="progress-bar">
+                        <div class="progress-bar" onclick="showGoalDetails('meditation')">
                             <div class="progress-fill" id="meditationBar" style="width: 75%;"></div>
                         </div>
                     </div>
@@ -1092,7 +1202,7 @@
                             <span>Exercise (150 min)</span>
                             <span id="exerciseProgress">60%</span>
                         </div>
-                        <div class="progress-bar">
+                        <div class="progress-bar" onclick="showGoalDetails('exercise')">
                             <div class="progress-fill" id="exerciseBar" style="width: 60%;"></div>
                         </div>
                     </div>
@@ -1101,7 +1211,7 @@
                             <span>Mindfulness (7 days)</span>
                             <span id="mindfulnessProgress">85%</span>
                         </div>
-                        <div class="progress-bar">
+                        <div class="progress-bar" onclick="showGoalDetails('mindfulness')">
                             <div class="progress-fill" id="mindfulnessBar" style="width: 85%;"></div>
                         </div>
                     </div>
@@ -1169,7 +1279,7 @@
                     <button class="btn-link" onclick="refreshPlan()">↻</button>
                 </div>
 
-                <div class="card" style="background: #f8f4ff; margin-bottom: 20px;">
+                <div class="card" style="background: #f8f4ff; margin-bottom: 20px; cursor: pointer;" onclick="showNotification('Your personalized plan for today')">
                     <div style="display: flex; align-items: center; gap: 12px;">
                         <span class="icon">📅</span>
                         <div>
@@ -1240,7 +1350,7 @@
                     <div class="premium-badge" id="meditationPremiumBadge">PREMIUM</div>
                 </div>
 
-                <div class="card" style="text-align: center;">
+                <div class="card" style="text-align: center; cursor: pointer;" onclick="showNotification('Choose a meditation session')">
                     <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto 20px; font-size: 40px;">🧘</div>
                     <h3 style="margin-bottom: 10px;">Guided Meditation</h3>
                     <p style="color: #666; margin-bottom: 20px;">Choose a session to begin</p>
@@ -1251,7 +1361,7 @@
                         <div class="image-placeholder" style="width: 50px; height: 50px; border-radius: 25px; margin: 0 auto 10px; font-size: 24px;">🧘</div>
                         <h4>5 Minutes</h4>
                         <p style="color: #999;">Quick calm</p>
-                        <span class="premium-badge">Free</span>
+                        <span class="premium-badge" style="background: #4CAF50; color: white;">Free</span>
                     </div>
                     <div class="card" style="cursor: pointer; text-align: center;" onclick="startMeditation(10)">
                         <div class="image-placeholder" style="width: 50px; height: 50px; border-radius: 25px; margin: 0 auto 10px; font-size: 24px;">🧘</div>
@@ -1284,15 +1394,15 @@
                 <div class="card">
                     <h4 style="margin-bottom: 10px;">Popular Meditations</h4>
                     <div style="display: flex; gap: 10px; overflow-x: auto; padding: 10px 0;">
-                        <div style="min-width: 120px; text-align: center;">
+                        <div style="min-width: 120px; text-align: center; cursor: pointer;" onclick="startMeditation(10)">
                             <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto 5px;">🌅</div>
                             <p>Morning Calm</p>
                         </div>
-                        <div style="min-width: 120px; text-align: center;">
+                        <div style="min-width: 120px; text-align: center; cursor: pointer;" onclick="startMeditation(15)">
                             <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto 5px;">😴</div>
                             <p>Sleep Easy</p>
                         </div>
-                        <div style="min-width: 120px; text-align: center;">
+                        <div style="min-width: 120px; text-align: center; cursor: pointer;" onclick="startMeditation(5)">
                             <div class="image-placeholder" style="width: 80px; height: 80px; border-radius: 40px; margin: 0 auto 5px;">🧠</div>
                             <p>Focus Flow</p>
                         </div>
@@ -1339,31 +1449,31 @@
                 <div class="card">
                     <h3 style="margin-bottom: 10px;">Activity Overview</h3>
                     <div class="chart-container" id="activityChart">
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Monday')">
                             <div class="chart-bar" style="height: 120px;" id="chartMon"></div>
                             <div class="chart-label">Mon</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Tuesday')">
                             <div class="chart-bar" style="height: 90px;" id="chartTue"></div>
                             <div class="chart-label">Tue</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Wednesday')">
                             <div class="chart-bar" style="height: 150px;" id="chartWed"></div>
                             <div class="chart-label">Wed</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Thursday')">
                             <div class="chart-bar" style="height: 80px;" id="chartThu"></div>
                             <div class="chart-label">Thu</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Friday')">
                             <div class="chart-bar" style="height: 140px;" id="chartFri"></div>
                             <div class="chart-label">Fri</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Saturday')">
                             <div class="chart-bar" style="height: 110px;" id="chartSat"></div>
                             <div class="chart-label">Sat</div>
                         </div>
-                        <div style="flex: 1; text-align: center;">
+                        <div style="flex: 1; text-align: center; cursor: pointer;" onclick="showDayDetails('Sunday')">
                             <div class="chart-bar" style="height: 70px;" id="chartSun"></div>
                             <div class="chart-label">Sun</div>
                         </div>
@@ -1374,7 +1484,7 @@
                 <div class="card">
                     <h3 style="margin-bottom: 20px;">Activity Breakdown</h3>
                     
-                    <div class="progress-item">
+                    <div class="progress-item" onclick="showActivityDetails('meditation')" style="cursor: pointer;">
                         <div class="progress-header">
                             <span>Meditation</span>
                             <span id="meditationTotal">75 min</span>
@@ -1384,7 +1494,7 @@
                         </div>
                     </div>
 
-                    <div class="progress-item">
+                    <div class="progress-item" onclick="showActivityDetails('exercise')" style="cursor: pointer;">
                         <div class="progress-header">
                             <span>Exercise</span>
                             <span id="exerciseTotal">120 min</span>
@@ -1394,7 +1504,7 @@
                         </div>
                     </div>
 
-                    <div class="progress-item">
+                    <div class="progress-item" onclick="showActivityDetails('mindfulness')" style="cursor: pointer;">
                         <div class="progress-header">
                             <span>Mindfulness</span>
                             <span id="mindfulnessTotal">45 min</span>
@@ -1404,7 +1514,7 @@
                         </div>
                     </div>
 
-                    <div class="progress-item">
+                    <div class="progress-item" onclick="showActivityDetails('sleep')" style="cursor: pointer;">
                         <div class="progress-header">
                             <span>Sleep</span>
                             <span id="sleepTotal">42 hours</span>
@@ -1557,7 +1667,7 @@
                         <span>→</span>
                     </div>
 
-                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer;" onclick="handleLogout()">
+                    <div style="display: flex; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer;" onclick="confirmLogout()">
                         <div class="image-placeholder" style="width: 30px; height: 30px; border-radius: 15px; font-size: 16px; background: #ff6b6b;">🚪</div>
                         <div style="flex: 1;">
                             <strong style="color: #ff6b6b;">Logout</strong>
@@ -1574,7 +1684,7 @@
                     <div></div>
                 </div>
 
-                <div class="card premium-card" style="text-align: center; margin-bottom: 30px;">
+                <div class="card premium-card" style="text-align: center; margin-bottom: 30px; cursor: pointer;" onclick="showNotification('Your current subscription details')">
                     <span class="icon" style="font-size: 48px;">👑</span>
                     <h3 style="margin: 10px 0;" id="subscriptionStatus">Premium Member</h3>
                     <p>Your wellness journey, enhanced</p>
@@ -1586,11 +1696,11 @@
                 <h3 style="margin-bottom: 16px;">Your Benefits</h3>
                 <div class="card">
                     <ul style="list-style: none;">
-                        <li style="margin-bottom: 12px;">✓ Unlimited AI Chat sessions</li>
-                        <li style="margin-bottom: 12px;">✓ Personalized daily plans</li>
-                        <li style="margin-bottom: 12px;">✓ Advanced progress analytics</li>
-                        <li style="margin-bottom: 12px;">✓ Exclusive meditation library</li>
-                        <li style="margin-bottom: 12px;">✓ Priority support</li>
+                        <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;" onclick="showNotification('Unlimited AI Chat sessions')">✓ Unlimited AI Chat sessions</li>
+                        <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;" onclick="showNotification('Personalized daily plans')">✓ Personalized daily plans</li>
+                        <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;" onclick="showNotification('Advanced progress analytics')">✓ Advanced progress analytics</li>
+                        <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;" onclick="showNotification('Exclusive meditation library')">✓ Exclusive meditation library</li>
+                        <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px;" onclick="showNotification('Priority support')">✓ Priority support</li>
                     </ul>
                 </div>
 
@@ -1606,18 +1716,18 @@
                 </div>
 
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <span class="icon" style="font-size: 64px;">👑</span>
+                    <span class="icon" style="font-size: 64px; cursor: pointer;" onclick="showNotification('Unlock premium features')">👑</span>
                     <h2 style="margin-bottom: 8px;">Unlock Your Potential</h2>
                     <p style="color: #666;">Get access to all premium features</p>
                 </div>
 
                 <!-- Features Comparison -->
                 <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                    <div style="flex: 1; text-align: center; padding: 10px; background: #f9f9f9; border-radius: 12px;">
+                    <div style="flex: 1; text-align: center; padding: 10px; background: #f9f9f9; border-radius: 12px; cursor: pointer;" onclick="showNotification('Free tier features')">
                         <p style="font-weight: bold;">Free</p>
                         <p style="font-size: 12px; color: #999;">Basic access</p>
                     </div>
-                    <div style="flex: 1; text-align: center; padding: 10px; background: #f8f4ff; border-radius: 12px; border: 2px solid #667eea;">
+                    <div style="flex: 1; text-align: center; padding: 10px; background: #f8f4ff; border-radius: 12px; border: 2px solid #667eea; cursor: pointer;" onclick="showNotification('Premium tier features')">
                         <p style="font-weight: bold; color: #667eea;">Premium</p>
                         <p style="font-size: 12px; color: #667eea;">Everything included</p>
                     </div>
@@ -1651,12 +1761,12 @@
                 <button class="btn" onclick="handleSubscribe()">Subscribe Now</button>
                 
                 <div style="display: flex; gap: 20px; justify-content: center; margin-top: 16px;">
-                    <span style="font-size: 12px; color: #999;">🔒 Secure payment</span>
-                    <span style="font-size: 12px; color: #999;">↩️ Cancel anytime</span>
+                    <span style="font-size: 12px; color: #999; cursor: pointer;" onclick="showNotification('Secure payment guaranteed')">🔒 Secure payment</span>
+                    <span style="font-size: 12px; color: #999; cursor: pointer;" onclick="showNotification('Cancel anytime')">↩️ Cancel anytime</span>
                 </div>
 
                 <p style="font-size: 12px; color: #999; text-align: center; margin-top: 16px;">
-                    By subscribing, you agree to our Terms and Privacy Policy
+                    By subscribing, you agree to our <a href="#" onclick="showNotification('Terms of Service')">Terms</a> and <a href="#" onclick="showNotification('Privacy Policy')">Privacy Policy</a>
                 </p>
             </div>
 
@@ -1678,7 +1788,7 @@
                         </label>
                     </div>
 
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <div style="display: flex; align-items; justify-content: space-between; margin-bottom: 16px;">
                         <span>Sound Effects</span>
                         <label class="switch">
                             <input type="checkbox" id="soundToggle" checked onchange="toggleSound(this.checked)">
@@ -1729,16 +1839,16 @@
                 <div class="card">
                     <h3 style="margin-bottom: 16px;">Data & Privacy</h3>
                     
-                    <div style="margin-bottom: 12px; cursor: pointer;" onclick="exportData()">
+                    <div style="margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 8px; hover: background #f0f0f0;" onclick="exportData()">
                         <span>📤 Export My Data</span>
                     </div>
-                    <div style="margin-bottom: 12px; cursor: pointer;" onclick="showPrivacySettings()">
+                    <div style="margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 8px;" onclick="showPrivacySettings()">
                         <span>🔒 Privacy Settings</span>
                     </div>
-                    <div style="margin-bottom: 12px; cursor: pointer;" onclick="showTerms()">
+                    <div style="margin-bottom: 12px; cursor: pointer; padding: 8px; border-radius: 8px;" onclick="showTerms()">
                         <span>📋 Terms of Service</span>
                     </div>
-                    <div style="cursor: pointer; color: #ff6b6b;" onclick="confirmDeleteAccount()">
+                    <div style="cursor: pointer; color: #ff6b6b; padding: 8px; border-radius: 8px;" onclick="confirmDeleteAccount()">
                         <span>🗑️ Delete Account</span>
                     </div>
                 </div>
@@ -1754,48 +1864,48 @@
                 <div class="card" style="background: #e8f4fd;" id="notif1">
                     <div style="display: flex; gap: 12px;">
                         <div class="image-placeholder" style="width: 40px; height: 40px; border-radius: 20px; font-size: 20px;">🔔</div>
-                        <div style="flex: 1;">
+                        <div style="flex: 1;" onclick="viewNotification(1)">
                             <strong>Daily Reminder</strong>
                             <p>Time for your evening meditation</p>
                             <p style="color: #999; font-size: 12px;">5 minutes ago</p>
                         </div>
-                        <button class="btn-link" onclick="markAsRead('notif1')">✓</button>
+                        <button class="btn-link" onclick="markAsRead('notif1', event)">✓</button>
                     </div>
                 </div>
 
                 <div class="card" id="notif2">
                     <div style="display: flex; gap: 12px;">
                         <div class="image-placeholder" style="width: 40px; height: 40px; border-radius: 20px; font-size: 20px;">🏆</div>
-                        <div style="flex: 1;">
+                        <div style="flex: 1;" onclick="viewNotification(2)">
                             <strong>Achievement Unlocked!</strong>
                             <p>7-day meditation streak</p>
                             <p style="color: #999; font-size: 12px;">2 hours ago</p>
                         </div>
-                        <button class="btn-link" onclick="markAsRead('notif2')">✓</button>
+                        <button class="btn-link" onclick="markAsRead('notif2', event)">✓</button>
                     </div>
                 </div>
 
                 <div class="card" id="notif3">
                     <div style="display: flex; gap: 12px;">
                         <div class="image-placeholder" style="width: 40px; height: 40px; border-radius: 20px; font-size: 20px;">💪</div>
-                        <div style="flex: 1;">
+                        <div style="flex: 1;" onclick="viewNotification(3)">
                             <strong>New Workout Available</strong>
                             <p>Try our new 15-minute HIIT session</p>
                             <p style="color: #999; font-size: 12px;">Yesterday</p>
                         </div>
-                        <button class="btn-link" onclick="markAsRead('notif3')">✓</button>
+                        <button class="btn-link" onclick="markAsRead('notif3', event)">✓</button>
                     </div>
                 </div>
 
                 <div class="card" id="notif4">
                     <div style="display: flex; gap: 12px;">
                         <div class="image-placeholder" style="width: 40px; height: 40px; border-radius: 20px; font-size: 20px;">🌟</div>
-                        <div style="flex: 1;">
+                        <div style="flex: 1;" onclick="viewNotification(4)">
                             <strong>Welcome to Premium!</strong>
                             <p>Explore all your new features</p>
                             <p style="color: #999; font-size: 12px;">3 days ago</p>
                         </div>
-                        <button class="btn-link" onclick="markAsRead('notif4')">✓</button>
+                        <button class="btn-link" onclick="markAsRead('notif4', event)">✓</button>
                     </div>
                 </div>
             </div>
@@ -1862,7 +1972,7 @@
                         <div class="recipe-name">Green Smoothie Bowl</div>
                         <div class="recipe-meta">15 min • 320 cal</div>
                         <p style="font-size: 12px; color: #666;">Spinach, banana, almond milk</p>
-                        <div class="rating">★★★★☆</div>
+                        <div class="rating" onclick="rateRecipe(1, event)">★★★★☆</div>
                     </div>
                 </div>
 
@@ -1872,7 +1982,7 @@
                         <div class="recipe-name">Quinoa Buddha Bowl</div>
                         <div class="recipe-meta">25 min • 450 cal</div>
                         <p style="font-size: 12px; color: #666;">Quinoa, roasted veggies, tahini</p>
-                        <div class="rating">★★★★★</div>
+                        <div class="rating" onclick="rateRecipe(2, event)">★★★★★</div>
                     </div>
                 </div>
 
@@ -1882,7 +1992,7 @@
                         <div class="recipe-name">Protein Overnight Oats</div>
                         <div class="recipe-meta">10 min prep • 380 cal</div>
                         <p style="font-size: 12px; color: #666;">Oats, protein powder, berries</p>
-                        <div class="rating">★★★★☆</div>
+                        <div class="rating" onclick="rateRecipe(3, event)">★★★★☆</div>
                     </div>
                 </div>
 
@@ -1892,7 +2002,7 @@
                         <div class="recipe-name">Grilled Salmon Bowl</div>
                         <div class="recipe-meta">20 min • 520 cal</div>
                         <p style="font-size: 12px; color: #666;">Salmon, brown rice, asparagus</p>
-                        <div class="rating">★★★★★</div>
+                        <div class="rating" onclick="rateRecipe(4, event)">★★★★★</div>
                     </div>
                 </div>
 
@@ -1902,7 +2012,7 @@
                         <div class="recipe-name">Avocado Toast</div>
                         <div class="recipe-meta">10 min • 290 cal</div>
                         <p style="font-size: 12px; color: #666;">Whole grain bread, avocado, poached egg</p>
-                        <div class="rating">★★★★☆</div>
+                        <div class="rating" onclick="rateRecipe(5, event)">★★★★☆</div>
                     </div>
                 </div>
             </div>
@@ -2034,9 +2144,9 @@
                 </div>
 
                 <!-- Users Tab Content -->
-                <div id="adminUsersTab" class="admin-tab-content">
+                <div id="adminUsersTab" class="admin-tab-content active">
                     <div class="search-bar">
-                        <input type="text" class="search-input" placeholder="Search users..." id="userSearch">
+                        <input type="text" class="search-input" placeholder="Search users..." id="userSearch" onkeyup="searchUsers()">
                         <button class="btn-small" onclick="searchUsers()">🔍</button>
                         <button class="btn-small btn-success" onclick="addNewUser()">+ Add</button>
                     </div>
@@ -2052,34 +2162,54 @@
                             </tr>
                         </thead>
                         <tbody id="usersTableBody">
-                            <tr>
+                            <tr onclick="viewUserDetails(1)">
                                 <td>Alex Johnson</td>
                                 <td>alex@example.com</td>
                                 <td><span class="badge badge-success">Premium</span></td>
                                 <td>Jan 15, 2024</td>
-                                <td>
+                                <td onclick="event.stopPropagation()">
                                     <button class="btn-link" onclick="editUser(1)">✎</button>
                                     <button class="btn-link" onclick="suspendUser(1)">⛔</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr onclick="viewUserDetails(2)">
                                 <td>Sarah Smith</td>
                                 <td>sarah@example.com</td>
                                 <td><span class="badge badge-warning">Free</span></td>
                                 <td>Feb 3, 2024</td>
-                                <td>
+                                <td onclick="event.stopPropagation()">
                                     <button class="btn-link" onclick="editUser(2)">✎</button>
                                     <button class="btn-link" onclick="suspendUser(2)">⛔</button>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr onclick="viewUserDetails(3)">
                                 <td>Mike Brown</td>
                                 <td>mike@example.com</td>
                                 <td><span class="badge badge-success">Premium</span></td>
                                 <td>Dec 10, 2023</td>
-                                <td>
+                                <td onclick="event.stopPropagation()">
                                     <button class="btn-link" onclick="editUser(3)">✎</button>
                                     <button class="btn-link" onclick="suspendUser(3)">⛔</button>
+                                </td>
+                            </tr>
+                            <tr onclick="viewUserDetails(4)">
+                                <td>Emma Wilson</td>
+                                <td>emma@example.com</td>
+                                <td><span class="badge badge-success">Premium</span></td>
+                                <td>Mar 1, 2024</td>
+                                <td onclick="event.stopPropagation()">
+                                    <button class="btn-link" onclick="editUser(4)">✎</button>
+                                    <button class="btn-link" onclick="suspendUser(4)">⛔</button>
+                                </td>
+                            </tr>
+                            <tr onclick="viewUserDetails(5)">
+                                <td>James Lee</td>
+                                <td>james@example.com</td>
+                                <td><span class="badge badge-warning">Free</span></td>
+                                <td>Mar 5, 2024</td>
+                                <td onclick="event.stopPropagation()">
+                                    <button class="btn-link" onclick="editUser(5)">✎</button>
+                                    <button class="btn-link" onclick="suspendUser(5)">⛔</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -2087,17 +2217,17 @@
                 </div>
 
                 <!-- Subscriptions Tab Content -->
-                <div id="adminSubscriptionsTab" class="admin-tab-content" style="display: none;">
+                <div id="adminSubscriptionsTab" class="admin-tab-content">
                     <div class="grid-3" style="margin-bottom: 20px;">
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="showSubscriptionStats('revenue')">
                             <div class="stat-value">$12,450</div>
                             <div class="stat-label">Monthly Revenue</div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="showSubscriptionStats('active')">
                             <div class="stat-value">456</div>
                             <div class="stat-label">Active Subs</div>
                         </div>
-                        <div class="stat-card">
+                        <div class="stat-card" onclick="showSubscriptionStats('churn')">
                             <div class="stat-value">3.2%</div>
                             <div class="stat-label">Churn Rate</div>
                         </div>
@@ -2114,51 +2244,143 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr onclick="viewPlanDetails('monthly')">
                                 <td>Monthly Premium</td>
                                 <td>312</td>
                                 <td>$3,116</td>
-                                <td>+12%</td>
-                                <td><button class="btn-link" onclick="editPlan('monthly')">Edit</button></td>
+                                <td><span style="color: #4CAF50;">+12%</span></td>
+                                <td onclick="event.stopPropagation()">
+                                    <button class="btn-link" onclick="editPlan('monthly')">Edit</button>
+                                </td>
                             </tr>
-                            <tr>
+                            <tr onclick="viewPlanDetails('yearly')">
                                 <td>Yearly Premium</td>
                                 <td>144</td>
                                 <td>$14,256</td>
-                                <td>+8%</td>
-                                <td><button class="btn-link" onclick="editPlan('yearly')">Edit</button></td>
+                                <td><span style="color: #4CAF50;">+8%</span></td>
+                                <td onclick="event.stopPropagation()">
+                                    <button class="btn-link" onclick="editPlan('yearly')">Edit</button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Analytics Tab Content -->
-                <div id="adminAnalyticsTab" class="admin-tab-content" style="display: none;">
+                <div id="adminAnalyticsTab" class="admin-tab-content">
                     <div class="card">
-                        <h3>User Growth</h3>
+                        <h3 style="margin-bottom: 10px;">User Growth</h3>
                         <div class="chart-container" style="height: 150px;">
-                            <div class="chart-bar" style="height: 80px;"></div>
-                            <div class="chart-bar" style="height: 100px;"></div>
-                            <div class="chart-bar" style="height: 120px;"></div>
-                            <div class="chart-bar" style="height: 140px;"></div>
-                            <div class="chart-bar" style="height: 160px;"></div>
-                            <div class="chart-bar" style="height: 180px;"></div>
+                            <div style="flex: 1; text-align: center;" onclick="showGrowthDetails('jan')">
+                                <div class="chart-bar" style="height: 80px;"></div>
+                                <div class="chart-label">Jan</div>
+                            </div>
+                            <div style="flex: 1; text-align: center;" onclick="showGrowthDetails('feb')">
+                                <div class="chart-bar" style="height: 100px;"></div>
+                                <div class="chart-label">Feb</div>
+                            </div>
+                            <div style="flex: 1; text-align: center;" onclick="showGrowthDetails('mar')">
+                                <div class="chart-bar" style="height: 120px;"></div>
+                                <div class="chart-label">Mar</div>
+                            </div>
+                            <div style="flex: 1; text-align: center;" onclick="showGrowthDetails('apr')">
+                                <div class="chart-bar" style="height: 140px;"></div>
+                                <div class="chart-label">Apr</div>
+                            </div>
+                            <div style="flex: 1; text-align: center;" onclick="showGrowthDetails('may')">
+                                <div class="chart-bar" style="height: 160px;"></div>
+                                <div class="chart-label">May</div>
+                            </div>
+                            <div style="flex: 1; text-align: center;" onclick="showGrowthDetails('jun')">
+                                <div class="chart-bar" style="height: 180px;"></div>
+                                <div class="chart-label">Jun</div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="grid-2">
-                        <div class="card">
+                        <div class="card" onclick="showFeatureDetails()" style="cursor: pointer;">
                             <h4>Top Features</h4>
-                            <p>Meditation: 45%</p>
+                            <p style="margin-top: 10px;">Meditation: 45%</p>
+                            <div class="progress-bar" style="margin-bottom: 10px;"><div class="progress-fill" style="width: 45%;"></div></div>
                             <p>AI Chat: 32%</p>
+                            <div class="progress-bar" style="margin-bottom: 10px;"><div class="progress-fill" style="width: 32%;"></div></div>
                             <p>Daily Plans: 23%</p>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 23%;"></div></div>
                         </div>
-                        <div class="card">
+                        <div class="card" onclick="showRetentionDetails()" style="cursor: pointer;">
                             <h4>User Retention</h4>
-                            <p>Week 1: 85%</p>
+                            <p style="margin-top: 10px;">Week 1: 85%</p>
+                            <div class="progress-bar" style="margin-bottom: 10px;"><div class="progress-fill" style="width: 85%;"></div></div>
                             <p>Week 4: 67%</p>
+                            <div class="progress-bar" style="margin-bottom: 10px;"><div class="progress-fill" style="width: 67%;"></div></div>
                             <p>Week 12: 52%</p>
+                            <div class="progress-bar"><div class="progress-fill" style="width: 52%;"></div></div>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Content Tab Content -->
+                <div id="adminContentTab" class="admin-tab-content">
+                    <div class="card">
+                        <h3 style="margin-bottom: 15px;">Manage Content</h3>
+                        
+                        <div style="margin-bottom: 15px; cursor: pointer;" onclick="editContent('tips')">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Daily Tips</span>
+                                <span class="badge badge-success">24 active</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px; cursor: pointer;" onclick="editContent('meditations')">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Meditations</span>
+                                <span class="badge badge-success">18 active</span>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px; cursor: pointer;" onclick="editContent('recipes')">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Recipes</span>
+                                <span class="badge badge-success">32 active</span>
+                            </div>
+                        </div>
+                        
+                        <div style="cursor: pointer;" onclick="editContent('plans')">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>Daily Plans</span>
+                                <span class="badge badge-success">12 active</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="addNewContent()">Add New Content</button>
+                </div>
+
+                <!-- Admin Settings Tab Content -->
+                <div id="adminSettingsTab" class="admin-tab-content">
+                    <div class="card">
+                        <h3 style="margin-bottom: 15px;">System Settings</h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label class="input-label">Maintenance Mode</label>
+                            <label class="switch">
+                                <input type="checkbox" onchange="toggleMaintenance(this.checked)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label class="input-label">API Status</label>
+                            <p><span class="badge badge-success">Operational</span></p>
+                        </div>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <label class="input-label">Last Backup</label>
+                            <p>Today, 3:00 AM</p>
+                        </div>
+                        
+                        <button class="btn-small" onclick="triggerBackup()">Backup Now</button>
                     </div>
                 </div>
             </div>
@@ -2230,12 +2452,14 @@
                 day: 'numeric' 
             });
 
-            // Load saved user if exists
-            const savedUser = localStorage.getItem('wellnessUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                isPremium = localStorage.getItem('wellnessPremium') === 'true';
-            }
+            // Add click handlers to all stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('btn-link')) {
+                        showNotification('Viewing statistics');
+                    }
+                });
+            });
         });
 
         // UI Update
@@ -2263,6 +2487,7 @@
                 document.getElementById('profilePremiumBadge').style.background = '#ffd700';
                 document.getElementById('chatPremiumBadge').style.display = 'inline-flex';
                 document.getElementById('meditationPremiumBadge').style.display = 'inline-flex';
+                document.getElementById('chatBadge').style.display = 'none';
             } else {
                 document.getElementById('premiumStatus').textContent = 'Upgrade to Premium';
                 document.getElementById('premiumSubtext').textContent = 'Unlock AI features & personalized plans';
@@ -2270,6 +2495,7 @@
                 document.getElementById('profilePremiumBadge').style.background = '#ccc';
                 document.getElementById('chatPremiumBadge').style.display = 'none';
                 document.getElementById('meditationPremiumBadge').style.display = 'none';
+                document.getElementById('chatBadge').style.display = 'inline-flex';
             }
             
             // Update unread count
@@ -2431,6 +2657,12 @@
             showNotification('Logged out successfully 👋');
         }
 
+        function confirmLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                handleLogout();
+            }
+        }
+
         // Navigation
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(screen => {
@@ -2500,7 +2732,13 @@
                 container.innerHTML = `
                     <div class="chat-message ai">
                         <div class="chat-bubble">
-                            👋 Hello! I'm your AI wellness coach. How can I help you today?
+                            👋 Hello! I'm your AI wellness coach. I can help you with:
+                            <br><br>• Meditation guidance
+                            <br>• Exercise tips
+                            <br>• Nutrition advice
+                            <br>• Stress management
+                            <br>• Sleep improvement
+                            <br><br>What would you like to discuss today?
                         </div>
                     </div>
                 `;
@@ -2727,6 +2965,13 @@
             document.getElementById('consistencyScore').textContent = '85%';
             document.getElementById('caloriesBurned').textContent = Math.floor(1250 * mult);
             
+            // Update chart heights based on tab
+            const chartBars = document.querySelectorAll('.chart-bar');
+            const heights = [120, 90, 150, 80, 140, 110, 70];
+            chartBars.forEach((bar, index) => {
+                bar.style.height = (heights[index] * mult * 0.5) + 'px';
+            });
+            
             showNotification(`Showing ${tab} progress`);
         }
 
@@ -2749,6 +2994,34 @@
 
         function showPointsDetails() {
             showNotification('💎 You have 1250 wellness points');
+        }
+
+        function showGoalDetails(goal) {
+            showNotification(`Viewing ${goal} goal details`);
+        }
+
+        function showDayDetails(day) {
+            showNotification(`${day} activity: 45 minutes`);
+        }
+
+        function showActivityDetails(activity) {
+            showNotification(`Viewing ${activity} details`);
+        }
+
+        function showMetricDetails(metric) {
+            showNotification(`Viewing ${metric} metrics`);
+        }
+
+        function showAchievementDetails(achievement) {
+            showNotification(`Achievement: ${achievement}`);
+        }
+
+        function viewActivityDetails(activity) {
+            showNotification(`Viewing activity: ${activity}`);
+        }
+
+        function viewAllActivity() {
+            showNotification('Viewing all activity history');
         }
 
         // Settings functions
@@ -2798,8 +3071,14 @@
         }
 
         // Notifications
-        function markAsRead(notifId) {
+        function viewNotification(id) {
+            showNotification(`Viewing notification #${id}`);
+        }
+
+        function markAsRead(notifId, event) {
+            event.stopPropagation();
             document.getElementById(notifId).style.opacity = '0.5';
+            document.getElementById(notifId).style.background = '#f9f9f9';
             unreadCount = Math.max(0, unreadCount - 1);
             document.getElementById('unreadCount').textContent = unreadCount;
             showNotification('Notification marked as read');
@@ -2808,6 +3087,7 @@
         function markAllRead() {
             document.querySelectorAll('[id^="notif"]').forEach(el => {
                 el.style.opacity = '0.5';
+                el.style.background = '#f9f9f9';
             });
             unreadCount = 0;
             document.getElementById('unreadCount').textContent = unreadCount;
@@ -2851,6 +3131,11 @@
             showNotification(`Viewing recipe #${id}`);
         }
 
+        function rateRecipe(id, event) {
+            event.stopPropagation();
+            showNotification(`Rating recipe #${id}`);
+        }
+
         // Badges
         function showBadgeDetails(badge) {
             showNotification(`Viewing ${badge} badge details`);
@@ -2879,6 +3164,7 @@
             document.getElementById('monthlyPlan').classList.remove('selected');
             document.getElementById('yearlyPlan').classList.remove('selected');
             document.getElementById(plan + 'Plan').classList.add('selected');
+            showNotification(`Selected ${plan} plan`);
         }
 
         function handleSubscribe() {
@@ -2903,10 +3189,15 @@
             element.classList.add('active');
             
             document.querySelectorAll('.admin-tab-content').forEach(el => {
-                el.style.display = 'none';
+                el.classList.remove('active');
             });
             
-            document.getElementById(`admin${tab.charAt(0).toUpperCase() + tab.slice(1)}Tab`).style.display = 'block';
+            const tabId = 'admin' + tab.charAt(0).toUpperCase() + tab.slice(1) + 'Tab';
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function showAdminStats(type) {
+            showNotification(`Viewing ${type} statistics`);
         }
 
         function searchUsers() {
@@ -2918,22 +3209,61 @@
             showNotification('Add new user form opened');
         }
 
+        function viewUserDetails(id) {
+            showNotification(`Viewing user #${id} details`);
+        }
+
         function editUser(id) {
+            event.stopPropagation();
             showNotification(`Editing user #${id}`);
         }
 
         function suspendUser(id) {
+            event.stopPropagation();
             if (confirm(`Suspend user #${id}?`)) {
                 showNotification(`User #${id} suspended`);
             }
         }
 
+        function viewPlanDetails(plan) {
+            showNotification(`Viewing ${plan} plan details`);
+        }
+
         function editPlan(plan) {
+            event.stopPropagation();
             showNotification(`Editing ${plan} plan`);
         }
 
-        function showAdminStats(type) {
+        function showSubscriptionStats(type) {
             showNotification(`Viewing ${type} statistics`);
+        }
+
+        function showGrowthDetails(month) {
+            showNotification(`Growth details for ${month}`);
+        }
+
+        function showFeatureDetails() {
+            showNotification('Viewing feature usage details');
+        }
+
+        function showRetentionDetails() {
+            showNotification('Viewing retention details');
+        }
+
+        function editContent(type) {
+            showNotification(`Editing ${type} content`);
+        }
+
+        function addNewContent() {
+            showNotification('Add new content form opened');
+        }
+
+        function toggleMaintenance(enabled) {
+            showNotification(enabled ? 'Maintenance mode enabled' : 'Maintenance mode disabled');
+        }
+
+        function triggerBackup() {
+            showNotification('Backup started...');
         }
 
         // Utility Functions
@@ -2951,26 +3281,6 @@
             setTimeout(() => {
                 toast.remove();
             }, 3000);
-        }
-
-        function triggerFileUpload() {
-            document.getElementById('profileUpload').click();
-        }
-
-        function viewActivityDetails(activity) {
-            showNotification(`Viewing activity: ${activity}`);
-        }
-
-        function viewAllActivity() {
-            showNotification('Viewing all activity history');
-        }
-
-        function showMetricDetails(metric) {
-            showNotification(`Viewing ${metric} details`);
-        }
-
-        function showAchievementDetails(achievement) {
-            showNotification(`Achievement: ${achievement}`);
         }
 
         // Keyboard handling
